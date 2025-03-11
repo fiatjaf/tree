@@ -335,9 +335,9 @@ func (node *Node) print(indent string, opts *Options) {
 			rsize, err := dirRecursiveSize(opts, node)
 			if err != nil && rsize <= 0 {
 				if opts.UnitSize {
-					size = "????"
+					size = "    "
 				} else {
-					size = "???????????"
+					size = "           "
 				}
 			} else if opts.UnitSize {
 				size = fmt.Sprintf("%4s", formatBytes(rsize))
