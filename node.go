@@ -1,10 +1,12 @@
 package tree
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
 	"os/user"
 	"path/filepath"
 	"regexp"
@@ -12,6 +14,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unsafe"
 )
 
 // Node represent some node in the tree
@@ -53,6 +56,7 @@ type Options struct {
 	MatchDirs  bool
 	Prune      bool
 	// File
+	Contents bool
 	ByteSize bool
 	UnitSize bool
 	FileMode bool
@@ -250,6 +254,8 @@ func dirRecursiveSize(opts *Options, node *Node) (size int64, err error) {
 	return
 }
 
+var reusable = make([]byte, 60)
+
 func (node *Node) print(indent string, opts *Options) {
 	if node.err != nil {
 		err := node.err.Error()
@@ -390,9 +396,40 @@ func (node *Node) print(indent string, opts *Options) {
 			}
 		}
 	}
-	// Print file details
+	// Print file name/details
 	// the main idea of the print logic came from here: github.com/campoy/tools/tree
-	fmt.Fprintln(opts.OutFile, name)
+	fmt.Fprint(opts.OutFile, name)
+
+	// Print first line of content
+	if opts.Contents {
+		mime, _ := exec.Command("file", "--mime-type", "--brief", "-P", "bytes=200", node.path).Output()
+		if unsafe.String(unsafe.SliceData(mime), len(mime)-1) == "text/plain" {
+			if file, err := os.Open(node.path); err == nil {
+				if n, err := file.Read(reusable); err == nil {
+					if firstNewline := bytes.IndexAny(reusable[0:n], "\n\r"); firstNewline != -1 {
+						n = firstNewline
+					}
+					hasMore := n == 60
+					if hasMore {
+						n = 59
+					}
+
+					fmt.Fprintf(opts.OutFile, " => `")
+					opts.OutFile.Write(reusable[0:n])
+
+					if hasMore {
+						fmt.Fprintf(opts.OutFile, "…`")
+					} else {
+						fmt.Fprintf(opts.OutFile, "`")
+					}
+				}
+				file.Close()
+			}
+		}
+	}
+	fmt.Fprintln(opts.OutFile, "")
+
+	// tree stuff
 	add := "│   "
 	for i, nnode := range node.nodes {
 		if opts.NoIndent {

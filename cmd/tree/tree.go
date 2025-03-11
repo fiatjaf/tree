@@ -23,6 +23,7 @@ var (
 	I          = flag.String("I", "", "")
 	o          = flag.String("o", "", "")
 	// Files
+	one    = flag.Bool("1", false, "")
 	s      = flag.Bool("s", false, "")
 	h      = flag.Bool("h", false, "")
 	p      = flag.Bool("p", false, "")
@@ -52,6 +53,7 @@ Options:
     -a		    All files are listed.
     -d		    List directories only.
     -l		    Follow symbolic links like directories.
+    -1		    Print first line of text/plain files.
     -f		    Print the full path prefix for each file.
     -L		    Descend only level directories deep.
     -P		    List only those files that match the pattern given.
@@ -85,14 +87,14 @@ Options:
 func main() {
 	flag.Usage = func() { fmt.Fprint(os.Stderr, usage) }
 	var nd, nf int
-	var dirs = []string{"."}
+	dirs := []string{"."}
 	flag.Parse()
 	// Make it work with leading dirs
 	if args := flag.Args(); len(args) > 0 {
 		dirs = args
 	}
 	// Output file
-	var outFile = os.Stdout
+	outFile := os.Stdout
 	var err error
 	if *o != "" {
 		outFile, err = os.Create(*o)
@@ -126,6 +128,7 @@ func main() {
 		IPattern:   *I,
 		IgnoreCase: *ignorecase,
 		// Files
+		Contents: *one,
 		ByteSize: *s,
 		UnitSize: *h,
 		FileMode: *p,
