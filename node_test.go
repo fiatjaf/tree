@@ -1,4 +1,4 @@
-package tree
+package main
 
 import (
 	"errors"
@@ -69,6 +69,7 @@ func (fs *MockFs) Stat(path string) (os.FileInfo, error) {
 	}
 	return fs.files[path], nil
 }
+
 func (fs *MockFs) ReadDir(path string) ([]string, error) {
 	var names []string
 	for _, file := range fs.files[path].files {
@@ -329,7 +330,8 @@ var sortTests = []treeTest{
 ├── c
 │   └── d
 └── a
-`, 1, 3}}
+`, 1, 3},
+}
 
 func TestSort(t *testing.T) {
 	tFmt := "2006-Jan-02"
@@ -392,7 +394,8 @@ c
 ├── [Feb 11 00:00]  a
 ├── [Jan 28  2006]  b
 └── [Jul 12 00:00]  c
-`, 0, 3}}
+`, 0, 3},
+}
 
 func TestGraphics(t *testing.T) {
 	tFmt := "2006-Jan-02"
@@ -427,13 +430,14 @@ var symlinkTests = []treeTest{
 `, 0, 1},
 	{"symlink-rec", &Options{Fs: fs, OutFile: out, FollowLink: true}, `root
 └── symlink -> root/symlink [recursive, not followed]
-`, 0, 1}}
+`, 0, 1},
+}
 
 func TestSymlink(t *testing.T) {
 	root := &file{
 		name: "root",
 		files: []*file{
-			&file{name: "symlink", mode: os.ModeSymlink, files: make([]*file, 0)},
+			{name: "symlink", mode: os.ModeSymlink, files: make([]*file, 0)},
 		},
 	}
 	fs.clean().addFile(root.name, root)
@@ -453,7 +457,7 @@ func TestCount(t *testing.T) {
 	root := &file{
 		name: "root",
 		files: []*file{
-			&file{
+			{
 				name: "a",
 				files: []*file{
 					{
@@ -485,7 +489,8 @@ func TestCount(t *testing.T) {
 						},
 					},
 				},
-			}},
+			},
+		},
 	}
 	fs.clean().addFile(root.name, root)
 	opt := &Options{Fs: fs, OutFile: out}

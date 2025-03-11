@@ -1,10 +1,7 @@
 package ostree
 
 import (
-	"bytes"
 	"os"
-
-	"github.com/a8m/tree"
 )
 
 // FS uses the system filesystem
@@ -27,17 +24,4 @@ func (f *FS) ReadDir(path string) ([]string, error) {
 		return nil, err
 	}
 	return names, nil
-}
-
-// Print a tree of the directory
-func Print(dir string) string {
-	b := new(bytes.Buffer)
-	tr := tree.New(dir)
-	opts := &tree.Options{
-		Fs:      new(FS),
-		OutFile: b,
-	}
-	tr.Visit(opts)
-	tr.Print(opts)
-	return b.String()
 }

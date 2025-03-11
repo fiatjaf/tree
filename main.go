@@ -6,8 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/a8m/tree"
-	"github.com/a8m/tree/ostree"
+	"github.com/fiatjaf/tree/ostree"
 	"github.com/urfave/cli/v3"
 )
 
@@ -86,7 +85,7 @@ func main() {
 			}
 
 			// Set options
-			opts := &tree.Options{
+			opts := &Options{
 				// Required
 				Fs:      new(ostree.FS),
 				OutFile: outFile,
@@ -125,7 +124,7 @@ func main() {
 			}
 
 			for _, dir := range dirs {
-				inf := tree.New(dir)
+				inf := New(dir)
 				d, f := inf.Visit(opts)
 				nd, nf = nd+d, nf+f
 				inf.Print(opts)

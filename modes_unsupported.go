@@ -1,5 +1,6 @@
-//+build !dragonfly,!freebsd,!openbsd,!solaris,!windows,!android,!darwin,!linux,!nacl,!netbsd
+//go:build !dragonfly && !freebsd && !openbsd && !solaris && !windows && !android && !darwin && !linux && !nacl && !netbsd
+// +build !dragonfly,!freebsd,!openbsd,!solaris,!windows,!android,!darwin,!linux,!nacl,!netbsd
 
-package tree
+package main
 
 const modeExecute = 0

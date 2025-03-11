@@ -1,7 +1,7 @@
 //go:build linux || openbsd || dragonfly || android || solaris
 // +build linux openbsd dragonfly android solaris
 
-package tree
+package main
 
 import (
 	"os"

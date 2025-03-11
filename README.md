@@ -4,7 +4,7 @@ tree
 
 ### Installation:
 ```sh
-$ go get github.com/fiatjaf/tree/cmd/tree
+$ go get github.com/fiatjaf/tree
 ```
 
 ### License

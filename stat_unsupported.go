@@ -1,6 +1,7 @@
-//+build plan9 windows
+//go:build plan9 || windows
+// +build plan9 windows
 
-package tree
+package main
 
 import "os"
 

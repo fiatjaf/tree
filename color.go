@@ -1,4 +1,4 @@
-package tree
+package main
 
 import (
 	"fmt"
@@ -30,19 +30,23 @@ func ANSIColorFormat(style string, s string) string {
 // ANSIColor
 func ANSIColor(node *Node, s string) string {
 	var style string
-	var mode = node.Mode()
-	var ext = filepath.Ext(node.Name())
+	mode := node.Mode()
+	ext := filepath.Ext(node.Name())
 	switch {
 	case contains([]string{".bat", ".btm", ".cmd", ".com", ".dll", ".exe"}, ext):
 		style = "1;32"
-	case contains([]string{".arj", ".bz2", ".deb", ".gz", ".lzh", ".rpm",
+	case contains([]string{
+		".arj", ".bz2", ".deb", ".gz", ".lzh", ".rpm",
 		".tar", ".taz", ".tb2", ".tbz2", ".tbz", ".tgz", ".tz", ".tz2", ".z",
-		".zip", ".zoo"}, ext):
+		".zip", ".zoo",
+	}, ext):
 		style = "1;31"
-	case contains([]string{".asf", ".avi", ".bmp", ".flac", ".gif", ".jpg",
+	case contains([]string{
+		".asf", ".avi", ".bmp", ".flac", ".gif", ".jpg",
 		"jpeg", ".m2a", ".m2v", ".mov", ".mp3", ".mpeg", ".mpg", ".ogg", ".ppm",
 		".rm", ".tga", ".tif", ".wav", ".wmv",
-		".xbm", ".xpm"}, ext):
+		".xbm", ".xpm",
+	}, ext):
 		style = "1;35"
 	case node.IsDir() || mode&os.ModeDir != 0:
 		style = "1;34"

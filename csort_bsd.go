@@ -1,6 +1,7 @@
-//+build darwin freebsd netbsd
+//go:build darwin || freebsd || netbsd
+// +build darwin freebsd netbsd
 
-package tree
+package main
 
 import (
 	"os"

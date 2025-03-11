@@ -1,6 +1,7 @@
-//+build dragonfly freebsd openbsd solaris windows
+//go:build dragonfly || freebsd || openbsd || solaris || windows
+// +build dragonfly freebsd openbsd solaris windows
 
-package tree
+package main
 
 import "syscall"
 

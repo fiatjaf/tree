@@ -1,4 +1,4 @@
-module github.com/a8m/tree
+module github.com/fiatjaf/tree
 
 go 1.20
 

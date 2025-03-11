@@ -1,6 +1,7 @@
-//+build android darwin linux nacl netbsd
+//go:build android || darwin || linux || nacl || netbsd
+// +build android darwin linux nacl netbsd
 
-package tree
+package main
 
 import "syscall"
 
